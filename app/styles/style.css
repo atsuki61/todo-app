@@ -6,6 +6,11 @@
     font-family: 'Noto Sans JP', sans-serif;
 }
 
+/* モバイルでの入力フォームズーム防止 */
+input, textarea, select, button {
+    font-size: 16px;
+}
+
 body {
     background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
     min-height: 100vh;
@@ -325,7 +330,7 @@ body:not(.touch-device) *:focus-visible {
     
     #new-task {
         padding: 12px;
-        font-size: 15px;
+        font-size: 16px;
     }
     
     #add-button {
@@ -397,7 +402,7 @@ body:not(.touch-device) *:focus-visible {
     
     #new-task {
         padding: 10px;
-        font-size: 14px;
+        font-size: 16px;
     }
     
     .filter-btn {
