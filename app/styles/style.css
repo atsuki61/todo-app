@@ -15,6 +15,12 @@ body {
     padding: 20px;
 }
 
+/* タッチデバイス用のフィードバック */
+.touch-device .touch-active {
+    transform: scale(0.95);
+    opacity: 0.9;
+}
+
 .container {
     width: 100%;
     max-width: 550px;
@@ -213,6 +219,27 @@ h1 {
     transform: scale(1.1);
 }
 
+/* アクセシビリティの向上 */
+.task-checkbox:focus-visible,
+.delete-btn:focus-visible,
+#add-button:focus-visible,
+.filter-btn:focus-visible,
+#clear-completed:focus-visible,
+#new-task:focus-visible {
+    outline: 2px solid #8a2be2;
+    outline-offset: 2px;
+}
+
+/* キーボードユーザー向け */
+body:not(.touch-device) *:focus {
+    outline: none;
+}
+
+body:not(.touch-device) *:focus-visible {
+    outline: 2px solid #8a2be2;
+    outline-offset: 2px;
+}
+
 /* 空のタスクリスト */
 .empty-tasks {
     text-align: center;
@@ -249,14 +276,39 @@ h1 {
     text-decoration: underline;
 }
 
-/* レスポンシブデザイン */
+/* タブレット向けレスポンシブデザイン */
+@media (max-width: 768px) and (min-width: 577px) {
+    .container {
+        max-width: 90%;
+    }
+    
+    .task-item {
+        padding: 12px;
+    }
+    
+    .filter-btn {
+        padding: 7px 12px;
+    }
+}
+
+/* スマートフォン向けレスポンシブデザイン */
 @media (max-width: 576px) {
+    body {
+        padding: 0;
+        background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    }
+    
     .container {
         border-radius: 0;
+        max-width: 100%;
+        min-height: 100vh;
     }
     
     header {
         padding: 20px 15px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
     
     h1 {
@@ -267,18 +319,130 @@ h1 {
         padding: 20px 15px;
     }
     
+    .add-task {
+        margin-bottom: 20px;
+    }
+    
+    #new-task {
+        padding: 12px;
+        font-size: 15px;
+    }
+    
+    #add-button {
+        width: 45px;
+    }
+    
     .filter-container {
         flex-wrap: wrap;
+        margin-bottom: 15px;
     }
     
     .filter-btn {
         flex: 1;
         min-width: 80px;
         text-align: center;
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+    
+    .task-item {
+        padding: 12px;
+        margin-bottom: 8px;
+    }
+    
+    .task-checkbox {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+    }
+    
+    .task-text {
+        font-size: 15px;
+    }
+    
+    .delete-btn {
+        opacity: 0.8;
+        padding: 6px;
     }
     
     .todo-footer {
         flex-direction: column;
         gap: 10px;
+        align-items: flex-start;
+        padding-top: 12px;
+    }
+    
+    #clear-completed {
+        align-self: flex-end;
+    }
+}
+
+/* 小さい画面のスマートフォン向け */
+@media (max-width: 360px) {
+    header {
+        padding: 15px 12px;
+    }
+    
+    h1 {
+        font-size: 22px;
+    }
+    
+    .subtitle {
+        font-size: 14px;
+    }
+    
+    .todo-app {
+        padding: 15px 12px;
+    }
+    
+    #new-task {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .filter-btn {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    
+    .task-text {
+        font-size: 14px;
+    }
+}
+
+/* タッチデバイス向け最適化 */
+@media (hover: none) {
+    .task-item:hover {
+        transform: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .task-item:active {
+        background-color: rgba(138, 43, 226, 0.05);
+    }
+    
+    .delete-btn {
+        opacity: 0.8;
+        padding: 10px;
+    }
+    
+    .task-item:hover .delete-btn {
+        opacity: 0.8;
+    }
+    
+    .delete-btn:active {
+        transform: scale(1.2);
+    }
+    
+    #add-button, .filter-btn, #clear-completed {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .task-checkbox, .delete-btn {
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

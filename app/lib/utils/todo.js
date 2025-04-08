@@ -12,11 +12,21 @@ const STORAGE_KEY = 'todo-tasks';
 // タスクの配列
 let tasks = [];
 
+// タッチデバイス検出
+const isTouchDevice = () => {
+    return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+};
+
 // アプリの初期化
 function initApp() {
     loadTasksFromStorage();
     renderTasks();
     attachEventListeners();
+    
+    // タッチデバイス用のクラス追加
+    if (isTouchDevice()) {
+        document.body.classList.add('touch-device');
+    }
 }
 
 // イベントリスナーの設定
@@ -40,6 +50,28 @@ function attachEventListeners() {
             filterTasks(btn.dataset.filter);
         });
     });
+    
+    // タッチデバイス向けのフィードバック
+    if (isTouchDevice()) {
+        addTouchFeedback(addButton);
+        addTouchFeedback(clearCompletedBtn);
+        filterButtons.forEach(btn => addTouchFeedback(btn));
+    }
+}
+
+// タッチフィードバックの追加
+function addTouchFeedback(element) {
+    element.addEventListener('touchstart', () => {
+        element.classList.add('touch-active');
+    }, { passive: true });
+    
+    element.addEventListener('touchend', () => {
+        element.classList.remove('touch-active');
+    }, { passive: true });
+    
+    element.addEventListener('touchcancel', () => {
+        element.classList.remove('touch-active');
+    }, { passive: true });
 }
 
 // 新しいタスクの追加
@@ -162,9 +194,9 @@ function renderTasks() {
             taskElement.dataset.id = task.id;
             
             taskElement.innerHTML = `
-                <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} aria-label="${task.completed ? '完了を取り消す' : 'タスクを完了する'}">
                 <span class="task-text">${escapeHtml(task.text)}</span>
-                <button class="delete-btn">
+                <button class="delete-btn" aria-label="タスクを削除">
                     <i class="fas fa-trash"></i>
                 </button>
             `;
@@ -175,6 +207,11 @@ function renderTasks() {
             
             checkbox.addEventListener('change', () => toggleTaskStatus(task.id));
             deleteBtn.addEventListener('click', () => deleteTask(task.id));
+            
+            // タッチデバイス向けのフィードバック
+            if (isTouchDevice()) {
+                addTouchFeedback(deleteBtn);
+            }
             
             taskList.appendChild(taskElement);
         });
